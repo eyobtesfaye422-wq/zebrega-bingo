@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Zebrega Bingo</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+
+body{
+background:#9b7bbf;
+font-family:Arial;
+color:white;
+margin:0;
+}
+
+.header{
+background:#8a6ab5;
+padding:15px;
+font-size:20px;
+display:flex;
+justify-content:space-between;
+}
+
+.section{
+padding:10px;
+}
+
+.game{
+background:#b89bd6;
+border-radius:12px;
+padding:15px;
+margin-bottom:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.join{
+background:#28a745;
+border:none;
+color:white;
+padding:10px 16px;
+border-radius:8px;
+font-size:14px;
+}
+
+.bar{
+height:6px;
+background:#ddd;
+border-radius:4px;
+margin-top:5px;
+}
+
+.progress{
+height:6px;
+background:#ffd700;
+border-radius:4px;
+}
+
+#card{
+display:none;
+text-align:center;
+padding:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(5,60px);
+gap:5px;
+justify-content:center;
+}
+
+.cell{
+background:white;
+color:black;
+padding:10px;
+border-radius:5px;
+font-weight:bold;
+}
+
+#number{
+font-size:40px;
+text-align:center;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div>🎯 Zebrega Bingo</div>
+<div>Balance: <span id="balance">0</span> ETB</div>
+</div>
+
+<div class="section" id="games">
+
+<div class="game">
+<div>
+<b>10 ETB</b><br>
+Win: 400
+<div class="bar"><div class="progress" style="width:30%"></div></div>
+</div>
+<button class="join" onclick="joinGame(10)">JOIN</button>
+</div>
+
+<div class="game">
+<div>
+<b>20 ETB</b><br>
+Win: 800
+<div class="bar"><div class="progress" style="width:45%"></div></div>
+</div>
+<button class="join" onclick="joinGame(20)">JOIN</button>
+</div>
+
+<div class="game">
+<div>
+<b>50 ETB</b><br>
+Win: 2000
+<div class="bar"><div class="progress" style="width:60%"></div></div>
+</div>
+<button class="join" onclick="joinGame(50)">JOIN</button>
+</div>
+
+<div class="game">
+<div>
+<b>100 ETB</b><br>
+Win: 5000
+<div class="bar"><div class="progress" style="width:20%"></div></div>
+</div>
+<button class="join" onclick="joinGame(100)">JOIN</button>
+</div>
+
+</div>
+
+<div id="card">
+
+<h3>Your Bingo Card</h3>
+
+<div class="grid" id="grid"></div>
+
+<div id="number">-</div>
+
+<button class="join" onclick="startGame()">START</button>
+
+</div>
+
+<script>
+
+let balance = 100
+document.getElementById("balance").innerText = balance
+
+let numbers = []
+
+function joinGame(bet){
+
+if(balance < bet){
+alert("Not enough balance")
+return
+}
+
+balance -= bet
+document.getElementById("balance").innerText = balance
+
+document.getElementById("games").style.display="none"
+document.getElementById("card").style.display="block"
+
+generateCard()
+
+}
+
+function generateCard(){
+
+let grid = document.getElementById("grid")
+grid.innerHTML=""
+
+numbers=[]
+
+for(let i=0;i<25;i++){
+
+let n = Math.floor(Math.random()*75)+1
+numbers.push(n)
+
+let div = document.createElement("div")
+div.className="cell"
+div.innerText=n
+
+grid.appendChild(div)
+
+}
+
+}
+
+function startGame(){
+
+let called = []
+
+setInterval(()=>{
+
+let n = Math.floor(Math.random()*75)+1
+
+if(!called.includes(n)){
+
+called.push(n)
+document.getElementById("number").innerText=n
+
+}
+
+},3000)
+
+}
+
+</script>
+
+</body>
+</html>
